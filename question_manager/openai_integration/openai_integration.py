@@ -1,5 +1,6 @@
 import os
 import openai
+import re
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Set up OpenAI API credentials
@@ -11,6 +12,8 @@ model = 'text-davinci-003'
 def generate_mcq(input_text: str, number_of_questions: int):
     if not number_of_questions:
         number_of_questions = 5
+
+    input_text = re.sub(r'\W+', ' ', input_text)
     prompt = f"""Generate {number_of_questions} multiple-choice question in the following form: 'What is the capital of France?\n A) Berlin\n B) Rome\n C) Paris (correct)\n D) Amsterdam' separated by two new line characters, "\n", from the following text: `{input_text}`"""
 
     response = openai.Completion.create(
